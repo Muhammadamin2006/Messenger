@@ -8,10 +8,15 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="14.0.0" />
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="FluentValidation" Version="12.0.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0-preview.4.25258.110">
           <PrivateAssets>all</PrivateAssets>
@@ -30,17 +35,22 @@
         </PackageReference>
         <PackageReference Include="SwaggerUi" Version="1.1.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Infrastractures\Migrations\" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI-4.14.0" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MessengerAspire\MessengerAspire.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Messenger.Application\obj\Messenger.Application.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Messenger.Application\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Messenger.Infrastructure\obj\Messenger.Infrastructure.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Messenger.Infrastructure\obj\project.assets.json" />
     </ItemGroup>
 
 </Project>

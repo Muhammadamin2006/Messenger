@@ -21,12 +21,18 @@ builder.Services.AddDbContext<MessengerContext>(options =>
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserBlocksRepository, UserBlocksRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IIncomingService, IncomingService>();
 builder.Services.AddScoped<IOutgoingService, OutgoingService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IOutgoingRepository, OutgoingRepository>();
 builder.Services.AddScoped<IIncomingRepository, IncomingRepository>();
-builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IGroupUserRepository, GroupUserRepository>();
+builder.Services.AddScoped<IChatMessageRepository, ChatMessageRepository>();
+builder.Services.AddScoped<IChatMessageService, ChatMessageService>();
+builder.Services.AddScoped<IChatMessageVisibilityRepository, ChatMessageVisibilityRepository>();
+
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -7,11 +7,21 @@ public class MessengerContext : DbContext
 {
     
     public DbSet<User> Users { get; set; }
+    public DbSet<UserBlock> UserBlocks { get; set; }
+
     public DbSet<Group> Groups { get; set; }
     public DbSet<GroupUser> GroupUsers { get; set; }
+    public DbSet<GroupMessage> GroupMessages { get; set; }
+    public DbSet<GroupMessageVisibility> GroupMessageVisibilities { get; set; }
+    
     public DbSet<OutgoingMessage> OutgoingMessages { get; set; }
     public DbSet<IncomingMessage> IncomingMessages { get; set; }
-    public DbSet<UserBlock> UserBlocks { get; set; }
+    public DbSet<Chat> Chats { get; set; }
+    public DbSet<ChatMessage> ChatMessages { get; set; }
+    public DbSet<ChatMessageEditHistory> ChatMessageEditHistories { get; set; }
+    public DbSet<ChatMessageVisibility> ChatMessageVisibilities { get; set; }
+    
+
     
     
 

@@ -12,4 +12,5 @@ public interface IUserService
     Task<SearchContactDto?> FindUserByPhoneNumberAsync(string phoneNumber);
     Task<List<UserDto>> GetAllUsersAsync();
 
+
 }

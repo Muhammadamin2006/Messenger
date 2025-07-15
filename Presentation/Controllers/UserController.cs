@@ -25,4 +25,6 @@ public class UserController : ControllerBase
         var users = await _userService.GetAllUsersAsync();
         return Ok(users);
     }
+    
+    
 }

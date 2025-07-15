@@ -8,15 +8,13 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     protected readonly MessengerContext _context;
     protected readonly DbSet<TEntity> _dbSet;
 
-    public GenericRepository(MessengerContext context)
+    public GenericRepository(MessengerContext context) 
     {
         _context = context;
         _dbSet = context.Set<TEntity>();
         
     }
-
-
-
+    
 
     public async Task<TEntity?> GetByIdAsync(Guid id)
     {

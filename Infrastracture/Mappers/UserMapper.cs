@@ -10,6 +10,9 @@ public class UserMapper : Profile
     {
         CreateMap<RegisterUserDto, User>()
             .ForMember(dest => dest.Id, opt => opt.Ignore());
+        CreateMap<Chat, ChatDto>()
+            .ForMember(dest => dest.FirstUserName, opt => opt.MapFrom(src => src.FirstUser.Username))
+            .ForMember(dest => dest.SecondUserName, opt => opt.MapFrom(src => src.SecondUser.Username));
     }
 
 }

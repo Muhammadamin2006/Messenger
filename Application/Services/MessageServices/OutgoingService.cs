@@ -13,21 +13,22 @@ public class OutgoingService : IOutgoingService
     private readonly IOutgoingRepository _outgoingRepository;
     private readonly IIncomingRepository _incomingRepository;
     private readonly IUserRepository _userRepository;
-    private readonly IGroupRepository _groupRepository;
+    private readonly IGroupUserRepository _groupUserRepository;
     private readonly IMapper _mapper;
     private readonly MessengerContext _context;
+    private readonly IGroupMessageRepository _groupMessageRepository;
 
     public OutgoingService(
         IOutgoingRepository outgoingRepository,
         IIncomingRepository incomingRepository,
         IUserRepository userRepository,
-        IGroupRepository groupRepository,
+        IGroupUserRepository groupUserRepository,
         IMapper mapper, MessengerContext  context)
     {
         _outgoingRepository = outgoingRepository;
         _incomingRepository = incomingRepository;
         _userRepository = userRepository;
-        _groupRepository = groupRepository;
+        _groupUserRepository = groupUserRepository;
         _mapper = mapper;
         _context = context;
     }
@@ -71,7 +72,7 @@ public class OutgoingService : IOutgoingService
         }
         else if (dto.ReceiverGroupId.HasValue)
         {
-            var group = await _groupRepository.GetByIdWithUsersAsync(dto.ReceiverGroupId.Value);
+            var group = await _groupUserRepository.GetByIdAsync(dto.ReceiverGroupId.Value);
             if (group == null)
                 throw new Exception("Группа не найдена");
 

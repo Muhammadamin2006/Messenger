@@ -71,4 +71,6 @@ public class UserService : IUserService
         var getalll = await _userRepository.GetAllUsersAsync();
         return _mapper.Map<List<UserDto>>(getalll);
     }
+
+    
 }

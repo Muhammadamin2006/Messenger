@@ -8,14 +8,17 @@ public class GroupUserConfiguration : IEntityTypeConfiguration<GroupUser>
 {
     public void Configure(EntityTypeBuilder<GroupUser> builder)
     {
-        builder.HasKey(ug => new { ug.UserId, ug.GroupId });
+        builder.HasKey(gu => gu.GroupUserId);
 
-        builder.HasOne(ug => ug.User)
-            .WithMany(u => u.UserGroups)
-            .HasForeignKey(ug => ug.UserId);
+        builder.Property(gu => gu.JoinedAt)
+            .IsRequired();
 
-        builder.HasOne(ug => ug.Group)
+        builder.HasOne(gu => gu.Group)
             .WithMany(g => g.GroupUsers)
-            .HasForeignKey(ug => ug.GroupId);
+            .HasForeignKey(gu => gu.GroupId);
+
+        builder.HasOne(gu => gu.User)
+            .WithMany()
+            .HasForeignKey(gu => gu.UserId);
     }
 }

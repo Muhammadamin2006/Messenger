@@ -1,12 +1,18 @@
 using Messenger.Domain.Models;
-
-namespace Messenger.Application.Services;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Messenger.Application.Dtos.ChatDtos;
 
 public interface IChatMessageService
 {
-    Task<ChatMessage> SendMessageAsync(Guid chatId, Guid senderId, string text);
-    Task<List<ChatMessage>> GetMessagesByChatIdAsync(Guid chatId, Guid forUserId);
-    Task<ChatMessage?> GetMessageByIdAsync(Guid messageId,  Guid forUserId);
-    Task<ChatMessage?> EditMessageAsync(Guid messageId, Guid userId, string newText);
-    
+    Task<List<ChatMessageDto>> GetMessagesByChatIdAsync(Guid chatId);
+
+    Task<ChatMessageDto?> GetMessageByIdAsync(Guid messageId);
+
+    Task EditMessageAsync(Guid messageId, Guid userId, string newText);
+
+    Task DeleteMessagesByChatIdAsync(Guid chatId);
+
+    Task<ChatMessageDto> SendMessageAsync(Guid chatId, Guid senderId, string text);
 }

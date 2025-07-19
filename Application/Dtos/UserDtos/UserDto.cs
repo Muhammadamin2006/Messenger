@@ -1,9 +1,10 @@
-namespace Messenger.Application.Dtos;
+namespace Messenger.Application.Dtos.UserDtos;
 
 public class UserDto
 {
-    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
     public string Username { get; set; } = null!;
     public string Email { get; set; } = null!;
-    public string PhoneNumber { get; set; } = null!;
+    public DateTime UserCreatedAt { get; set; }
+    
 }

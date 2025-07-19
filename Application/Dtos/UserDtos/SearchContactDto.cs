@@ -1,8 +1,8 @@
-namespace Messenger.Application.Dtos;
+namespace Messenger.Application.Dtos.UserDtos;
 
 public class SearchContactDto
 {
-    public string FullName { get; set; } = null!;
+    public string ContactName { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
 
 }

@@ -1,4 +1,5 @@
 using Messenger.Domain.Models;
+using Messenger.Domain.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Messenger.Infrastracture.Database;
@@ -18,12 +19,10 @@ public class MessengerContext : DbContext
     public DbSet<IncomingMessage> IncomingMessages { get; set; }
     public DbSet<Chat> Chats { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
-    public DbSet<ChatMessageEditHistory> ChatMessageEditHistories { get; set; }
+    // public DbSet<EditChatMessage> ChatMessageEditHistories { get; set; }
     public DbSet<ChatMessageVisibility> ChatMessageVisibilities { get; set; }
-    
+    public DbSet<ChatUser> ChatUsers { get; set; }
 
-    
-    
 
     public MessengerContext(DbContextOptions<MessengerContext> options) : base(options)
     {

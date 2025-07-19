@@ -1,4 +1,5 @@
 using Messenger.Application.Dtos;
+using Messenger.Application.Dtos.MessageDtos;
 
 namespace Messenger.Application.Services;
 

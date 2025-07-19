@@ -7,8 +7,9 @@ namespace Messenger.Application.Services.GroupServices;
 
 public interface IGroupMessageVisibilityService
 {
-    Task<bool> DeleteMessageForMeAsync(Guid messageId, Guid userId);
-    Task<bool> DeleteMessageForEveryoneAsync(Guid messageId, Guid userId);
+    Task<bool> IsMessageHiddenForUserAsync(Guid messageId, Guid userId);
+    Task HideMessageForUserAsync(Guid messageId, Guid userId);
+    Task<List<Guid>> GetHiddenMessageIdsAsync(Guid userId, Guid groupChatId);
 }
  
     

@@ -5,46 +5,38 @@ namespace Messenger.Application.Services;
 
 public class ChatMessageVisibilityService : IChatMessageVisibilityService
 {
-    
-    private readonly IChatMessageRepository _chatMessageRepository;
-    private readonly IChatMessageVisibilityRepository _chatMessageVisibilityRepository;
+    private readonly IChatMessageVisibilityRepository _visibilityRepository;
 
-    public ChatMessageVisibilityService(IChatMessageRepository chatMessageRepository,  IChatMessageVisibilityRepository chatMessageVisibilityRepository)
+    public ChatMessageVisibilityService(IChatMessageVisibilityRepository visibilityRepository)
     {
-        _chatMessageRepository = chatMessageRepository;
-        _chatMessageVisibilityRepository = chatMessageVisibilityRepository;
+        _visibilityRepository = visibilityRepository;
     }
-    
-    public async Task<bool> DeleteMessageForMeAsync(Guid messageId, Guid userId)
+
+    public async Task<bool> IsMessageHiddenForUserAsync(Guid messageId, Guid userId)
     {
-        var message = await _chatMessageRepository.GetByIdAsync(messageId);
-        if (message == null) return false;
+        return await _visibilityRepository.IsMessageHiddenForUserAsync(messageId, userId);
+    }
 
-        var alreadyHidden = await _chatMessageVisibilityRepository.IsMessageHiddenForUserAsync(messageId, userId);
-        if (alreadyHidden) return true;
+    public async Task<List<Guid>> GetHiddenMessageIdsAsync(Guid userId, Guid chatId)
+    {
+        return await _visibilityRepository.GetHiddenMessageIdsAsync(userId, chatId);
+    }
 
-        var visibility = new ChatMessageVisibility
+    public async Task HideMessageForUserAsync(Guid messageId, Guid userId)
+    {
+        bool alreadyHidden = await _visibilityRepository.IsMessageHiddenForUserAsync(messageId, userId);
+        if (alreadyHidden) return;
+
+        var hidden = new ChatMessageVisibility
         {
-            Id = Guid.NewGuid(),
-            UserId = userId,
-            MessageId = messageId
+            ChatMessageVisibilityId = Guid.NewGuid(),
+            HiddenMessageId = messageId,
+            HidUserId = userId
         };
 
-        await _chatMessageVisibilityRepository.AddAsync(visibility);
-        await _chatMessageVisibilityRepository.SaveChangesAsync();
-
-        return true;
+        await _visibilityRepository.AddAsync(hidden);
+        await _visibilityRepository.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteMessageForEveryoneAsync(Guid messageId, Guid userId)
-    {
-        var message = await _chatMessageRepository.GetByIdAsync(messageId);
-        if (message == null || message.SenderId != userId) return false;
-
-        message.IsDeleted = true;
-        _chatMessageRepository.Update(message);
-        await _chatMessageRepository.SaveChangesAsync(message);
-
-        return true;
-    }
+ 
 }

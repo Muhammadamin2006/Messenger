@@ -4,6 +4,8 @@ using FluentValidation.AspNetCore;
 using Messenger.Application.Services;
 using Messenger.Infrastracture.Database;
 using Messenger.Infrastracture.Repositories;
+using Messenger.Infrastracture.Repositories.ChatRepositories;
+using Messenger.Infrastracture.Repositories.GroupRepositories;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
@@ -32,6 +34,7 @@ builder.Services.AddScoped<IGroupUserRepository, GroupUserRepository>();
 builder.Services.AddScoped<IChatMessageRepository, ChatMessageRepository>();
 builder.Services.AddScoped<IChatMessageService, ChatMessageService>();
 builder.Services.AddScoped<IChatMessageVisibilityRepository, ChatMessageVisibilityRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 
 
 

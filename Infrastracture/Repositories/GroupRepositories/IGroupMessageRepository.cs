@@ -4,7 +4,9 @@ namespace Messenger.Infrastracture.Repositories;
 
 public interface IGroupMessageRepository : IGenericRepository<GroupMessage>
 {
-    Task<List<GroupMessage>> GetMessagesByGroupIdAsync(Guid groupId);
-    Task<GroupMessage?> GetByIdWithSenderAsync(Guid messageId);
+    Task<List<GroupMessage>> GetMessagesByGroupChatIdAsync(Guid groupChatId);
+    Task<GroupMessage?> GetMessageByIdAsync(Guid messageId);
+    Task EditMessageAsync(Guid messageId, Guid userId, string newText);
+    Task DeleteMessagesByGroupIdAsync(Guid groupChatId);
     Task SaveChangesAsync();
 }

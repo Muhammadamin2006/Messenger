@@ -2,11 +2,10 @@ using Messenger.Application.Dtos.GroupDto;
 
 namespace Messenger.Application.Services.GroupServices;
 
-public interface IGroupMessageService 
+public interface IGroupMessageService
 {
-    Task<GroupMessageDto> SendMessageAsync(SendGroupMessageDto dto);
-    Task<GroupMessageDto> EditMessageAsync(EditGroupMessageDto dto);
-
-    Task<List<GroupMessageDto>> GetMessagesInGroupAsync(Guid groupId, Guid userId);
-
+    Task<GroupMessageDto> SendMessageAsync(CreateGroupMessageDto dto, Guid senderId);
+    Task DeleteMessageAsync(Guid messageId, Guid currentUserId, bool deleteForAll);
+    Task<GroupMessageDto> EditMessageAsync(Guid messageId, Guid editorId, string newText);
+    Task<List<GroupMessageDto>> GetMessagesByGroupIdAsync(Guid groupId, Guid userId);
 }

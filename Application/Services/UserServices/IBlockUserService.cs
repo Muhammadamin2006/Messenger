@@ -1,4 +1,6 @@
 using Messenger.Application.Dtos;
+using Messenger.Application.Dtos.UserDtos;
+
 namespace Messenger.Application.Services;
 
 public interface IBlockUserService

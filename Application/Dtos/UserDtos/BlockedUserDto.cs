@@ -1,8 +1,11 @@
-namespace Messenger.Application.Dtos;
+namespace Messenger.Application.Dtos.UserDtos;
 
 public class BlockedUserDto
 {
-    public Guid Id { get; set; }   
-    public string Username { get; set; } = "";
+    public Guid BlockedUserId { get; set; }   
+    
+    public string BlockedUsername { get; set; } = null!;
+    
     public DateTime BlockedAt { get; set; }
+    
 }

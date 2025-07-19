@@ -3,7 +3,7 @@ using Messenger.Application.Dtos.GroupDto;
 
 namespace Messenger.Presentation.Validations;
 
-public class SendGroupMessageValidation : AbstractValidator<SendGroupMessageDto>
+public class SendGroupMessageValidation : AbstractValidator<CreateGroupMessageDto>
 {
     public SendGroupMessageValidation()
     {

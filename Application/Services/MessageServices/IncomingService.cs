@@ -1,5 +1,6 @@
 using AutoMapper;
 using Messenger.Application.Dtos;
+using Messenger.Application.Dtos.MessageDtos;
 using Messenger.Infrastracture.Repositories;
 
 namespace Messenger.Application.Services;

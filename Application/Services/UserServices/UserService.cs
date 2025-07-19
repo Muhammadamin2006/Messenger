@@ -1,76 +1,79 @@
 using AutoMapper;
 using Messenger.Application.Dtos;
+using Messenger.Application.Dtos.GroupDto;
+using Messenger.Application.Dtos.UserDtos;
 using Messenger.Domain.Models;
+using Messenger.Domain.Models.UserModels;
 using Messenger.Infrastracture.Database;
 using Messenger.Infrastracture.Repositories;
+using Messenger.Infrastracture.Repositories.GroupRepositories;
+using SearchContactDto = Messenger.Application.Dtos.SearchContactDto;
 
 namespace Messenger.Application.Services;
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IUserBlocksRepository  _userBlocksRepository;
-    private readonly MessengerContext _context;
     private readonly IMapper _mapper;
+    private readonly IGroupRepository _groupRepository;
 
-    public UserService(IUserRepository userRepository, IUserBlocksRepository userBlocksRepository,
-        MessengerContext context, IMapper mapper)
+    public UserService(IUserRepository userRepository, IMapper mapper,  IGroupRepository groupRepository)
     {
         _userRepository = userRepository;
-        _userBlocksRepository = userBlocksRepository;
-        _context = context;
         _mapper = mapper;
+        _groupRepository = groupRepository;
     }
 
-    public async Task<UserDto> RegisterUserAsync(RegisterUserDto dto)
+    public async Task<UserDto> RegisterUserAsync(RegistrationDto dto)
     {
-        var emailTaken = await _userRepository.IsEmailTakenAsync(dto.Email);
-        if (emailTaken)
-            throw new Exception("Email уже используется");
+        var isTaken = await _userRepository.IsEmailTakenAsync(dto.Email);
+        if (isTaken)
+            throw new Exception("Email уже используется.");
 
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+        var user = _mapper.Map<User>(dto);
+        user.UserCreatedAt = DateTime.UtcNow;
 
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            Username = dto.UserName,
-            Email = dto.Email,
-            PhoneNumber = dto.PhoneNumber,
-            PasswordHash = passwordHash
-        };
-
-        Console.WriteLine($"Регистрация пользователя с Id: {user.Id}, Email: {user.Email}, PasswordHash: {user.PasswordHash}");
         await _userRepository.AddAsync(user);
-        await _context.SaveChangesAsync();
 
         return _mapper.Map<UserDto>(user);
-        
     }
 
-    
+    public async Task<bool> IsEmailTakenAsync(string email)
+    {
+        return await _userRepository.IsEmailTakenAsync(email);
+    }
+
+    public async Task<List<SearchContactDto>> SearchUsersByNameAsync(string name)
+    {
+        var users = await _userRepository.SearchUsersByNameAsync(name);
+
+        var result = users.Select(u => new SearchContactDto
+        {
+            Username = u.Username,
+            Email = u.Email
+        }).ToList();
+
+        return result;
+    }
+
     public async Task DeleteUserAsync(Guid userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);
         if (user == null)
-            throw new Exception("Пользователь не найден");
+            throw new Exception("Пользователь не найден.");
 
-        await _userRepository.DeleteAsync(user);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task<SearchContactDto?> FindUserByPhoneNumberAsync(string phoneNumber)
-    {
-        var user = await _userRepository.GetByPhoneNumberAsync(phoneNumber);
-        if (user == null) return null;
-
-        return _mapper.Map<SearchContactDto>(user);
+        _userRepository.Delete(user);
     }
 
     public async Task<List<UserDto>> GetAllUsersAsync()
     {
-        var getalll = await _userRepository.GetAllUsersAsync();
-        return _mapper.Map<List<UserDto>>(getalll);
+        var users = await _userRepository.GetAllUsersAsync();
+        return _mapper.Map<List<UserDto>>(users);
     }
-
     
+    public async Task<List<GroupDto>> GetUserGroupsAsync(Guid userId)
+    {
+        var groups = await _groupRepository.GetGroupChatsForUserAsync(userId);
+        return _mapper.Map<List<GroupDto>>(groups);
+    }
 }

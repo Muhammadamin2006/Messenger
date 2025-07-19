@@ -1,10 +1,11 @@
 using System.Text.RegularExpressions;
 using FluentValidation;
 using Messenger.Application.Dtos;
+using Messenger.Application.Dtos.UserDtos;
 
 namespace Messenger.Presentation.Validations;
 
-public class RegistrationValidator : AbstractValidator<RegisterUserDto>
+public class RegistrationValidator : AbstractValidator<RegistrationDto>
 {
     public RegistrationValidator()
     {

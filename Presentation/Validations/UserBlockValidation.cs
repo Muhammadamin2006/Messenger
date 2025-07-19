@@ -1,5 +1,6 @@
 using FluentValidation;
 using Messenger.Application.Dtos;
+using Messenger.Application.Dtos.UserDtos;
 
 namespace Messenger.Presentation.Validations;
 

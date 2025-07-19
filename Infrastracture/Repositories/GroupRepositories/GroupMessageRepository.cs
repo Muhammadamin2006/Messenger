@@ -13,20 +13,47 @@ public class GroupMessageRepository : GenericRepository<GroupMessage>, IGroupMes
         _context = context;
     }
 
-    public async Task<List<GroupMessage>> GetMessagesByGroupIdAsync(Guid groupId)
+    public async Task<List<GroupMessage>> GetMessagesByGroupChatIdAsync(Guid groupChatId)
     {
         return await _context.GroupMessages
-            .Where(m => m.GroupId == groupId && !m.IsDeletedForAll)
-            .Include(m => m.Sender)
-            .OrderBy(m => m.SentAt)
+            .Where(m => m.GroupId == groupChatId)
+            .Include(m => m.GroupSender)
+            .OrderBy(m => m.GroupMessageSentAt)
             .ToListAsync();
     }
 
-    public async Task<GroupMessage?> GetByIdWithSenderAsync(Guid messageId)
+    public async Task<GroupMessage?> GetMessageByIdAsync(Guid messageId)
     {
         return await _context.GroupMessages
-            .Include(m => m.Sender)
+            .Include(m => m.GroupSender)
             .FirstOrDefaultAsync(m => m.GroupMessageId == messageId);
+    }
+
+    public async Task EditMessageAsync(Guid messageId, Guid userId, string newText)
+    {
+        var message = await _context.GroupMessages.FirstOrDefaultAsync(m => m.GroupMessageId == messageId);
+
+        if (message == null)
+            throw new Exception("Message not found");
+
+        if (message.GroupSenderId != userId)
+            throw new Exception("You can edit only your messages");
+
+        message.Text = newText;
+        message.GroupMessageEditedAt = DateTime.UtcNow;
+
+        _context.GroupMessages.Update(message);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteMessagesByGroupIdAsync(Guid groupChatId)
+    {
+        var messages = await _context.GroupMessages
+            .Where(m => m.GroupId == groupChatId)
+            .ToListAsync();
+
+        _context.GroupMessages.RemoveRange(messages);
+        await _context.SaveChangesAsync();
     }
 
     public async Task SaveChangesAsync()

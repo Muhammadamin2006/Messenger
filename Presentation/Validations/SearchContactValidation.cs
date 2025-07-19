@@ -1,5 +1,7 @@
 using FluentValidation;
 using Messenger.Application.Dtos;
+using Messenger.Application.Dtos.UserDtos;
+using SearchContactDto = Messenger.Application.Dtos.UserDtos.SearchContactDto;
 
 namespace Messenger.Presentation.Validations;
 

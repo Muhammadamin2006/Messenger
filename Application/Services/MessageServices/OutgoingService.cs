@@ -1,8 +1,10 @@
 using AutoMapper;
 using Messenger.Application.Dtos;
+using Messenger.Application.Dtos.MessageDtos;
 using Messenger.Domain.Models;
 using Messenger.Infrastracture.Database;
 using Messenger.Infrastracture.Repositories;
+using Messenger.Infrastracture.Repositories.GroupRepositories;
 
 
 namespace Messenger.Application.Services;
@@ -66,7 +68,7 @@ public class OutgoingService : IOutgoingService
             {
                 Id = Guid.NewGuid(),
                 OutgoingMessageId = message.Id,
-                ReceiverId = receiver.Id,
+                ReceiverId = receiver.UserId,
                 IsRead = false
             });
         }

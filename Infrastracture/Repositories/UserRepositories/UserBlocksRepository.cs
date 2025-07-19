@@ -1,4 +1,5 @@
 using Messenger.Domain.Models;
+using Messenger.Domain.Models.UserModels;
 using Messenger.Infrastracture.Database;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ public class UserBlocksRepository : GenericRepository<User>, IUserBlocksReposito
         {
             await _userBlocks.AddAsync(new UserBlock
             {
-                Id = Guid.NewGuid(),
+                UserBlockId = Guid.NewGuid(),
                 BlockerId = blockerId,
                 BlockedId = blockedId,
                 BlockedAt = DateTime.UtcNow 

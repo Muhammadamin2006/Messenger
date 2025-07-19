@@ -1,6 +1,8 @@
+using AutoMapper;
 using Messenger.Application.Dtos;
 using Messenger.Application.Services;
 using Messenger.Domain.Models;
+using Messenger.Domain.Models.UserModels;
 using Messenger.Infrastracture.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,32 +12,40 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 {
     private readonly MessengerContext _context;
     private readonly DbSet<User> _users;
-    
-    public UserRepository(MessengerContext context) : base(context)
+    private readonly UserRepository _usersRepository;
+    private readonly IMapper _mapper;
+
+    public UserRepository(MessengerContext context, UserRepository userRepository) : base(context)
     {
         _context = context;
-        _users = context.Set<User>();
-        
+        _users = context.Users;
+        _usersRepository = userRepository;
+    }
+
+    public async Task AddAsync(User user)
+    {
+        if (user.UserId == Guid.Empty)
+            user.UserId = Guid.NewGuid();
+
+        await _users.AddAsync(user);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsEmailTakenAsync(string email)
+    {
+        return await _context.Users.AnyAsync(u => u.Email == email);
+    }
+
+    public async Task<List<User>> SearchUsersByNameAsync(string name)
+    {
+        var users = await _usersRepository.SearchUsersByNameAsync(name);
+        return _mapper.Map<List<User>>(users);
     }
 
 
     public async Task<User?> GetByIdAsync(Guid userId)
     {
-        return await _users.FirstOrDefaultAsync(u => u.Id == userId);
-    }
-
-    public async Task DeleteAsync(User user)
-    {
-        if (_context.Entry(user).State == EntityState.Detached)
-            _users.Attach(user);
-
-         _users.Remove(user);
-    }
-
-    public async Task<User?> GetByPhoneNumberAsync(string phoneNumber)
-    {
-        return await _context.Users
-            .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+        return await _users.FirstOrDefaultAsync(u => u.UserId == userId);
     }
 
     public async Task<List<User>> GetAllUsersAsync()
@@ -43,19 +53,9 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return await _users.ToListAsync();
     }
 
-    public async Task AddAsync(User user)
+    public async Task<User?> GetByEmailAsync(string email)
     {
-        if (user.Id == Guid.Empty)
-            user.Id = Guid.NewGuid(); 
-
-        await _users.AddAsync(user);
-        await _context.SaveChangesAsync();
+        return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
     }
-
-
-    public async Task<bool> IsEmailTakenAsync(string email)
-    {
-        return await _users.AnyAsync(u => u.Email.ToLower() == email.ToLower());
-        
-    }
+    
 }

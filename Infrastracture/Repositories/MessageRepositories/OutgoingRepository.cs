@@ -21,9 +21,5 @@ public class OutgoingRepository : GenericRepository<OutgoingMessage>, IOutgoingR
             .Include(m => m.ReceiverGroup)
             .ToListAsync();
     }
-
-    public void Delete(OutgoingMessage message)
-    {
-        _messages.Remove(message);
-    }
+    
 }

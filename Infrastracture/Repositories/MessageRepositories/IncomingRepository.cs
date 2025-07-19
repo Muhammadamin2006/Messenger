@@ -24,10 +24,5 @@ public class IncomingRepository : GenericRepository<IncomingMessage>, IIncomingR
             .Where(i => i.ReceiverId == receiverId)
             .ToListAsync();
     }
-    
 
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
 }

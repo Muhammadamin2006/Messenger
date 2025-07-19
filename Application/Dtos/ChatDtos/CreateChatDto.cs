@@ -1,4 +1,4 @@
-namespace Messenger.Application.Dtos;
+namespace Messenger.Application.Dtos.ChatDtos;
 
 public class CreateChatDto
 {
